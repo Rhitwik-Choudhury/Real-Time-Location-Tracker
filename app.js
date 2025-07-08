@@ -11,14 +11,14 @@ const io = socketio(server); //socketio is basically a function, server is runni
 app.set("view engine", "ejs"); //setting up ejs
 app.use(express.static(path.join(__dirname, "public"))); //setting up public folder, so that we can use images,css and vanilla Js can be used
 
-io.on("connection", function (socket) { // will get a unique socket key value here
-    socket.on("send-location", function (data){
-        io.emit("receive-location", { id: socket.id, ...data });
+io.on("connection", function (socket) { // will get a unique socket key value here for every user
+    socket.on("send-location", function (data){ //receiving the location in bakend by socket
+        io.emit("receive-location", { id: socket.id, ...data }); //again giving back the location to evryone in frontend through io.emit, io.emit gives the location to everyone connected
     });
     console.log("connected");
 
-    socket.on("disconnect", function() {
-        io.emit("user-disconnected", socket.id);
+    socket.on("disconnect", function() { //creating a disconnect function when the user disconnects
+        io.emit("user-disconnected", socket.id); //giving in the frontend user-disconnected with the id of user
     });
 });
 
